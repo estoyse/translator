@@ -24,15 +24,24 @@ export const useTranslationStore = create<TranslationStore>(set => ({
           ? { ...translation, translation: translationText }
           : translation
       );
-      return { translations: updatedTranslations };
+      // Also update currentTranslation if it matches the ID
+      const currentTranslation =
+        state.currentTranslation?.id === id
+          ? { ...state.currentTranslation, translation: translationText }
+          : state.currentTranslation;
+
+      return {
+        translations: updatedTranslations,
+        currentTranslation: currentTranslation,
+      };
     });
   },
   setCurrent: id => {
     set(state => {
-      const currentTranslation = state.translations.filter(
+      const currentTranslation = state.translations.find(
         translation => translation.id === id
       );
-      return { currentTranslation: currentTranslation[0] };
+      return { currentTranslation: currentTranslation || null };
     });
   },
 }));

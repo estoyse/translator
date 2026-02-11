@@ -9,15 +9,13 @@ export default function App() {
   const updateTranslation = useTranslationStore(
     state => state.updateTranslation
   );
-  const setCurrent = useTranslationStore(state => state.setCurrent);
   useEffect(() => {
     socket.on("translation_result", (data: Translation) => {
       updateTranslation(data.id, data.translation);
-      setCurrent(data.id);
 
       console.log(data);
     });
-  }, [updateTranslation, setCurrent]);
+  }, [updateTranslation]);
   return (
     <div>
       <TranslationForm />
